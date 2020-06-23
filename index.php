@@ -32,12 +32,10 @@
 
 
         $email2 = strip_tags($_POST['registerEmail2']);
-        $email2 = str_replace(' ','', $emai2);
+        $email2 = str_replace(' ','', $email2);
         $email2 - ucfirst(strtolower($email2));
 
         $password = strip_tags($_POST['registerPassword']);
-
-
         $password2 = strip_tags($_POST['registerPassword2']);
 
         $date = date("Y-m-d");
@@ -45,7 +43,15 @@
         if($email == $email2) {
             if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                 $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-            }
+                
+                $e_check = mysqli_query($con, "SELECT email FROM users WHERE email='$email'");
+
+                $num_rows = mysqli_num_rows($e_check);
+
+                if($num_rows > 0){
+                    echo "The email you entered is taken.";
+                }
+
             else{
                 echo "Invalid format";
             }
